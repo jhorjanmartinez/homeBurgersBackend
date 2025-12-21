@@ -1,26 +1,103 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Category } from './entities/category.entity';
+import { Repository } from 'typeorm';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { isUUID } from 'class-validator';
 
 @Injectable()
 export class CategoriesService {
-  create(createCategoryDto: CreateCategoryDto) {
-    return 'This action adds a new category';
+
+  private readonly logger = new Logger('CategoriesService')
+
+  constructor(
+    @InjectRepository(Category)
+    private readonly categoryRepository: Repository<Category>
+  ) {}
+
+
+
+  async create(createCategoryDto: CreateCategoryDto) {
+    
+    try {
+      const category = this.categoryRepository.create(createCategoryDto)
+      await this.categoryRepository.save( category );
+
+      return category
+
+    } catch (error) {
+      
+      this.handleDBExceptions(error)
+
+    }
+
   }
 
-  findAll() {
-    return `This action returns all categories`;
+  findAll(paginationDto: PaginationDto) {
+    const { limit = 10, offset = 0 } = paginationDto
+
+    return this.categoryRepository.find({
+      take: limit,
+      skip: offset,
+    });
+
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
+  async findOne( term : string) {
+
+    let category: Category | null = null;
+
+    if( isUUID(term) ) {
+      category = await this.categoryRepository.findOneBy({ category_id: term })
+    } else {
+      category = await this.categoryRepository.findOneBy({ slug: term })
+    }
+
+    // const category = await this.categoryRepository.findOneBy({ category_id })
+
+    if(!category)
+      throw new NotFoundException(`category with id ${ term } not found`);
+    
+    return category;
+
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
+  async update(id: string, updateCategoryDto: UpdateCategoryDto) {
+
+    const  category = await this.categoryRepository.preload({
+      category_id: id,
+      ...updateCategoryDto
+    });
+
+
+    if (!category)
+    throw new NotFoundException(`Category with id ${id} not found`)
+
+    try {
+      await this.categoryRepository.save(category);
+      return category;
+      
+    } catch (error) {
+      this.handleDBExceptions(error)
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+  async remove(id: string) {
+
+    const category = await this.findOne(id);
+    await this.categoryRepository.remove(category)
+
   }
+
+
+    private handleDBExceptions( error: any ) {
+      if(error.code === '23505'  )
+      throw new BadRequestException(error.detail )
+
+      this.logger.error(error)
+      throw new InternalServerErrorException('Unexpected error, check server logs')
+  }
+
 }

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CategoriesModule } from './categories/categories.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -21,6 +22,8 @@ import { CategoriesModule } from './categories/categories.module';
     }),
 
     CategoriesModule,
+
+    CommonModule,
   ],
   controllers: [],
   providers: [
