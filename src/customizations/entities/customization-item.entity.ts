@@ -1,6 +1,7 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Customization } from "./customization.entity";
 
+@Index(['customization', 'name'], { unique: true })
 @Entity('customization_items')
 export class Customization_item {
 
@@ -10,7 +11,6 @@ export class Customization_item {
 
     @Column({
         type: 'text',
-        unique: true
     })
     name: string
 

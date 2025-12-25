@@ -1,6 +1,7 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { CustomizationOptionType } from "../customization-option.enum";
 import { Customization_item } from "./customization-item.entity";
+import { Product } from "src/products/entities/product.entity";
 
 @Entity('customizations')
 export class Customization {
@@ -33,6 +34,16 @@ export class Customization {
         (customization_item) => customization_item.customization,
     )
     customization_items: Customization_item[]
+
+
+
+    @ManyToMany(
+        () => Product,
+        (product) => product.customizations
+    )
+    products: Product[]
+
+
 
     @CreateDateColumn()
     created_at: Date;

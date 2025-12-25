@@ -3,10 +3,12 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Category } from 'src/categories/entities/category.entity';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { isUUID } from 'class-validator';
+import { AddCustomizationsToProductDto } from './dto/add-customizations.dto';
+import { Customization } from 'src/customizations/entities/customization.entity';
 
 @Injectable()
 export class ProductsService {
@@ -18,7 +20,12 @@ export class ProductsService {
     private readonly productRepository: Repository<Product>,
 
     @InjectRepository(Category)
-    private readonly categoryRepository: Repository<Category>
+    private readonly categoryRepository: Repository<Category>,
+
+
+    @InjectRepository(Customization)
+    private readonly customizationRepository: Repository<Customization>
+
 
   ) {}
 
@@ -52,6 +59,43 @@ export class ProductsService {
 
   }
 
+
+  async addCustomizations( productId: string, addCustomizationsToProductDto: AddCustomizationsToProductDto ) {
+
+
+    const { customizationIds } = addCustomizationsToProductDto;
+
+    const product = await this.productRepository.findOne({
+      where: {product_id: productId },
+      relations: {
+        customizations: true,
+      }
+    });
+
+    if( !product )
+      throw new NotFoundException(`Product with id ${productId} not found`,);
+
+
+    const customizations  = await this.customizationRepository.findBy({
+      customization_id: In(customizationIds)
+    });
+
+
+    if (customizations.length === 0)
+      throw new NotFoundException(`No valid customizations found`)
+
+
+    product.customizations = customizations
+
+    await this.productRepository.save(product);
+
+
+    return product
+
+  }
+
+
+
   findAll(paginationDto: PaginationDto) {
     const { limit = 10, offset = 0 } = paginationDto
 
@@ -77,6 +121,25 @@ export class ProductsService {
 
 
   }
+
+async findOneFull(productId: string) {
+
+  const product = await this.productRepository.findOne({
+    where: { product_id: productId },
+    relations: {
+      category: true,
+      customizations: {
+        customization_items: true,
+      },
+    },
+  });
+
+  if (!product)
+    throw new NotFoundException(`Product with id ${productId} not found`);
+
+  return product;
+}
+
 
   async update(id: string, updateProductDto: UpdateProductDto) {
 

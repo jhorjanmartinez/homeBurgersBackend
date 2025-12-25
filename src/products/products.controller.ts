@@ -3,6 +3,7 @@ import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { AddCustomizationsToProductDto } from './dto/add-customizations.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -13,6 +14,14 @@ export class ProductsController {
     return this.productsService.create(createProductDto);
   }
 
+@Post(':id/customizations')
+addCustomizations(
+  @Param('id') productId: string,
+  @Body() dto: AddCustomizationsToProductDto,
+) {
+  return this.productsService.addCustomizations(productId, dto);
+}
+
   @Get()
   findAll(@Query() paginationDto: PaginationDto ) {
     return this.productsService.findAll(paginationDto);
@@ -22,6 +31,14 @@ export class ProductsController {
   findOne(@Param('term') term: string) {
     return this.productsService.findOne(term);
   }
+
+
+  @Get(':id/full')
+  findOneFull(@Param('id') id: string) {
+    return this.productsService.findOneFull(id);
+}
+
+
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
