@@ -26,10 +26,19 @@ export class CustomizationsController {
     return this.customizationsService.findAll(paginationDto);
   }
 
+  @Get('with-items')
+  findAllWithItems() {
+    return this.customizationsService.findAllWithItems();
+  }
+
+
+
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.customizationsService.findOne(+id);
+    return this.customizationsService.findOneWithItems(id);
   }
+
+
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCustomizationDto: UpdateCustomizationDto) {

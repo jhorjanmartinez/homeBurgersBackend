@@ -81,9 +81,42 @@ async createItem(createCustomizationItemDto: CreateCustomizationItemDto) {
 
   }
 
+
+  async findAllWithItems() {
+
+
+    return this.customizationRepository.find({
+      relations: {
+        customization_items: true
+      }
+    })
+
+  }
+
+
   findOne(id: number) {
     return `This action returns a #${id} customization`;
   }
+
+
+  async findOneWithItems( customization_id: string ){
+
+    const customization = await this.customizationRepository.findOne({
+      where: { customization_id },
+      relations: {
+        customization_items: true,
+      },
+
+    });
+
+    if (!customization)
+      throw new NotFoundException(`Customization with id ${customization_id} not found`,)
+
+
+    return customization
+
+  }
+
 
   update(id: number, updateCustomizationDto: UpdateCustomizationDto) {
     return `This action updates a #${id} customization`;
