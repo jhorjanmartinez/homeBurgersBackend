@@ -1,10 +1,12 @@
-import { BadRequestException, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import { CreateCustomizationDto } from './dto/create-customization.dto';
 import { UpdateCustomizationDto } from './dto/update-customization.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Customization } from './entities/customization.entity';
 import { Repository } from 'typeorm';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { Customization_item } from './entities/customization-item.entity';
+import { CreateCustomizationItemDto } from './dto/create-customization-item.dto';
 
 @Injectable()
 export class CustomizationsService {
@@ -14,7 +16,10 @@ export class CustomizationsService {
 
   constructor(
     @InjectRepository(Customization)
-    private readonly customizationRepository: Repository<Customization>
+    private readonly customizationRepository: Repository<Customization>,
+
+    @InjectRepository(Customization_item)
+    private readonly customizationItemRepository: Repository<Customization_item>
   ){
 
   }
@@ -35,6 +40,35 @@ export class CustomizationsService {
     }
 
   }
+
+
+async createItem(createCustomizationItemDto: CreateCustomizationItemDto) {
+  
+  const { customization_id, name, price } = createCustomizationItemDto
+  
+  const customization = await this.customizationRepository.findOne({
+    where: { customization_id }
+  });
+
+
+  if( !customization )
+    throw new NotFoundException(`Customization with id ${ customization_id } not found`);
+
+
+  const customizationItem = this.customizationItemRepository.create({
+    name, price, customization
+  })
+
+
+  await this.customizationItemRepository.save(customizationItem)
+
+  return customizationItem
+
+}
+
+
+
+
 
   findAll(paginationDto: PaginationDto) {
     

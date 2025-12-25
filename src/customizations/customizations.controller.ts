@@ -3,6 +3,7 @@ import { CustomizationsService } from './customizations.service';
 import { CreateCustomizationDto } from './dto/create-customization.dto';
 import { UpdateCustomizationDto } from './dto/update-customization.dto';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { CreateCustomizationItemDto } from './dto/create-customization-item.dto';
 
 @Controller('customizations')
 export class CustomizationsController {
@@ -13,6 +14,11 @@ export class CustomizationsController {
   create(@Body() createCustomizationDto: CreateCustomizationDto) {
     return this.customizationsService.create(createCustomizationDto);
   }
+
+  @Post('items')
+  createItem(@Body() dto: CreateCustomizationItemDto) {
+  return this.customizationsService.createItem(dto);
+}
 
 
   @Get()
