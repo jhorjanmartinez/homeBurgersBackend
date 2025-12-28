@@ -5,6 +5,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { CommonModule } from './common/common.module';
 import { ProductsModule } from './products/products.module';
 import { CustomizationsModule } from './customizations/customizations.module';
+import { HomeModule } from './home/home.module';
 
 @Module({
   imports: [
@@ -30,6 +31,8 @@ import { CustomizationsModule } from './customizations/customizations.module';
     ProductsModule,
 
     CustomizationsModule,
+
+    HomeModule,
   ],
   controllers: [],
   providers: [
