@@ -33,6 +33,7 @@ import { HomeModule } from './home/home.module';
     CustomizationsModule,
 
     HomeModule,
+
   ],
   controllers: [],
   providers: [

@@ -1,68 +1,50 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { HomeCarrouselItem } from './home-carrousel-item.entity';
 
-@Entity('homes')
+@Entity()
 export class Home {
-
   @PrimaryGeneratedColumn('uuid')
   home_id: string;
 
-  @Column({ 
-    type: 'text', 
-})
+  @Column({
+    type: 'text',
+    unique: true,
+  })
   homeVideoUrl: string;
 
+  @Column({
+    type: 'text',
+  })
+  homePrincipal: string;
 
   @Column({
-    type: 'text'
+    type: 'text',
+    nullable:true
   })
-  homePrincipal:string;
-
+  sala: string;
 
   @Column({
-    type: 'text'
+    type: 'text',
+    nullable:true
   })
-  home1:string;
-
+  sala2: string;
 
   @Column({
-    type: 'text'
+    type: 'text',
+    nullable:true
   })
-  home2:string;
-
+  hamburguesa4: string;
 
   @Column({
-    type: 'text'
+    type: 'text',
+    nullable:true
   })
-  home3:string;
+  hamburguesa: string;
 
-
-  @Column({
-    type: 'text'
-  })
-  home4:string;
-
-
-  @Column({
-    type: 'text'
-  })
-  sala:string;
-
-
-  @Column({
-    type: 'text'
-  })
-  sala2:string;
-
-
-  @Column({
-    type: 'text'
-  })
-  hamburguesa:string;
-
-
-  @Column({
-    type: 'text'
-  })
-  hamburguesa4:string;
-
+  @OneToMany(
+    () => HomeCarrouselItem,
+    (homeCarrouselItem) => homeCarrouselItem.homes,
+    { cascade: true },
+  )
+  homeCarrousels: HomeCarrouselItem[];
 }
