@@ -23,8 +23,13 @@ addCustomizations(
 }
 
   @Get()
-  findAll(@Query() paginationDto: PaginationDto ) {
-    return this.productsService.findAll(paginationDto);
+  findAll() {
+    return this.productsService.findAll();
+  }
+
+  @Get('category/:slug') 
+  findByCategory(@Param('slug') slug: string) {
+    return this.productsService.findAll(slug);
   }
 
   @Get(':term')

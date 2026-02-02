@@ -96,14 +96,31 @@ export class ProductsService {
 
 
 
-  findAll(paginationDto: PaginationDto) {
-    const { limit = 10, offset = 0 } = paginationDto
+async findAll(categorySlug?: string) {
 
-    return this.productRepository.find({
-      take: limit,
-      skip: offset
-    })
-  }
+  const products = await this.productRepository.find({
+    relations: { 
+      category: true,
+      customizations: true
+    },
+    where: categorySlug 
+      ? { category: { slug: categorySlug } } 
+      : {} 
+  });
+
+  return products.map( product => { 
+    const opcions = product.customizations && product.customizations.length > 0;
+
+    return {
+      ...product,
+      has_customizations: opcions,
+      customizations:undefined
+    }
+
+  } )
+
+}
+
 
   async findOne(term: string) {
     
