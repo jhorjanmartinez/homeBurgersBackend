@@ -6,6 +6,7 @@ import { CommonModule } from './common/common.module';
 import { ProductsModule } from './products/products.module';
 import { CustomizationsModule } from './customizations/customizations.module';
 import { HomeModule } from './home/home.module';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { HomeModule } from './home/home.module';
 
     // Configuración de la base de datos usando variables de entorno
     TypeOrmModule.forRoot({
+      ssl: process.env.STAGE === 'prod',
       type: 'postgres',
       host: process.env.DB_HOST,
       port: +process.env.DB_PORT!,
@@ -33,6 +35,8 @@ import { HomeModule } from './home/home.module';
     CustomizationsModule,
 
     HomeModule,
+
+    OrdersModule,
 
   ],
   controllers: [],
