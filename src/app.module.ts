@@ -7,6 +7,7 @@ import { ProductsModule } from './products/products.module';
 import { CustomizationsModule } from './customizations/customizations.module';
 import { HomeModule } from './home/home.module';
 import { OrdersModule } from './orders/orders.module';
+import { UbicationsModule } from './ubications/ubications.module';
 
 @Module({
   imports: [
@@ -37,6 +38,8 @@ import { OrdersModule } from './orders/orders.module';
     HomeModule,
 
     OrdersModule,
+
+    UbicationsModule,
 
   ],
   controllers: [],
