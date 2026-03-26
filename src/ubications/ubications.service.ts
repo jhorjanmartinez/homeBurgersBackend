@@ -6,6 +6,7 @@ import { Ubication } from './entities/ubication.entity';
 import { Repository } from 'typeorm';
 import { CreateUbicationItemDto } from './dto/create-ubication-item.dto';
 import { ubicationItem } from './entities/ubication-item.entity';
+import { isUUID } from 'class-validator';
 
 @Injectable()
 export class UbicationsService {
@@ -70,15 +71,36 @@ export class UbicationsService {
   findAll() {
 
     return this.ubicationRepository.find({
-      relations: {
-        ubicationsItems: true
-      }
     })
 
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} ubication`;
+  async findOne( term: string ) {
+
+    let ubication: Ubication | null = null
+
+    if( isUUID(term) ) {
+      ubication = await this.ubicationRepository.findOne({
+        where: {ubication_id: term},
+        relations: {
+          ubicationsItems: true
+        }
+      })
+    } else {
+      ubication = await this.ubicationRepository.findOne({ 
+        where: {slug: term},
+        relations: {
+          ubicationsItems: true
+        }
+       })
+    }
+
+
+    if(!ubication)
+      throw new NotFoundException(`ubication with id ${ term } not found`);
+
+    return ubication
+
   }
 
   update(id: number, updateUbicationDto: UpdateUbicationDto) {

@@ -26,9 +26,9 @@ export class UbicationsController {
     return this.ubicationsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ubicationsService.findOne(+id);
+  @Get(':term')
+  findOne(@Param('term') term: string) {
+    return this.ubicationsService.findOne(term);
   }
 
   @Patch(':id')
