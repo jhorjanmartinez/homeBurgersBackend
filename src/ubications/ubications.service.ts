@@ -68,10 +68,18 @@ export class UbicationsService {
 
 
 
-  findAll() {
+  async findAll(citySlug?: string) {
 
-    return this.ubicationRepository.find({
+    const ubications = await this.ubicationRepository.find({
+      relations: {
+        ubicationsItems: true
+      },
+      where:  citySlug
+        ? { slug:citySlug }
+        : {}
     })
+
+    return ubications
 
   }
 
