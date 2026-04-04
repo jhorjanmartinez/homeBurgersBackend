@@ -8,6 +8,7 @@ import { CustomizationsModule } from './customizations/customizations.module';
 import { HomeModule } from './home/home.module';
 import { OrdersModule } from './orders/orders.module';
 import { UbicationsModule } from './ubications/ubications.module';
+import { CateringModule } from './catering/catering.module';
 
 @Module({
   imports: [
@@ -40,6 +41,8 @@ import { UbicationsModule } from './ubications/ubications.module';
     OrdersModule,
 
     UbicationsModule,
+
+    CateringModule,
 
   ],
   controllers: [],
