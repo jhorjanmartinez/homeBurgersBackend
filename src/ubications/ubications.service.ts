@@ -111,6 +111,24 @@ export class UbicationsService {
 
   }
 
+  async findOneBySlug(slug: string ){
+
+    let ubicationBySlug: ubicationItem | null = null;
+
+    if( isUUID(slug) ) {
+      ubicationBySlug = await this.ubicationItemRepository.findOneBy({ ubication_item_id: slug })
+    } else {
+      ubicationBySlug = await this.ubicationItemRepository.findOneBy({ slug: slug })
+    }
+
+
+    if(!ubicationBySlug)
+      throw new NotFoundException(`Product with ${ slug } not found`)
+
+    return ubicationBySlug
+
+  }
+
   update(id: number, updateUbicationDto: UpdateUbicationDto) {
     return `This action updates a #${id} ubication`;
   }

@@ -31,6 +31,14 @@ export class UbicationsController {
     return this.ubicationsService.findAll(term);
   }
 
+
+  @Get('item/:slug')
+  findOneBySlug(@Param('slug') slug: string) {
+    return this.ubicationsService.findOneBySlug(slug);
+  }
+
+
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUbicationDto: UpdateUbicationDto) {
     return this.ubicationsService.update(+id, updateUbicationDto);
