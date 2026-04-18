@@ -21,6 +21,13 @@ export class HomeCarrouselItem {
     })
     title: string
 
+
+    @Column({
+        type:'text',
+        unique: true
+    })
+    slug: string 
+
     @ManyToOne(
         () => Home,
         (home) => home.homeCarrousels
