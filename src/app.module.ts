@@ -26,7 +26,7 @@ import { NewsModule } from './news/news.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       autoLoadEntities: true,
-      synchronize: true, //solo para desarrollo
+      synchronize: false, //lo puse en false porque lei que es mas seguro migrar
     }),
 
     CategoriesModule,

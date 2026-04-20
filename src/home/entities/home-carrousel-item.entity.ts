@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Home } from "./home.entity";
 
 
@@ -35,5 +35,17 @@ export class HomeCarrouselItem {
     homes: Home
 
 
+    @BeforeInsert()
+    checkSlugInsert() {
+        if(!this.slug) {
+            this.slug = this.title
+        }
+
+
+        this.slug = this.slug
+            .toLowerCase()
+            .replaceAll(' ', '_')
+            .replaceAll("'", '')
+    }
 
 }
