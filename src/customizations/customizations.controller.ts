@@ -4,8 +4,11 @@ import { CreateCustomizationDto } from './dto/create-customization.dto';
 import { UpdateCustomizationDto } from './dto/update-customization.dto';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { CreateCustomizationItemDto } from './dto/create-customization-item.dto';
+import { Auth } from 'src/auth/decorators/auth.decorator';
+import { ValidRoles } from 'src/auth/interfaces';
 
 @Controller('customizations')
+@Auth(ValidRoles.admin)
 export class CustomizationsController {
   constructor(
     private readonly customizationsService: CustomizationsService) {}

@@ -3,8 +3,11 @@ import { UbicationsService } from './ubications.service';
 import { CreateUbicationDto } from './dto/create-ubication.dto';
 import { UpdateUbicationDto } from './dto/update-ubication.dto';
 import { CreateUbicationItemDto } from './dto/create-ubication-item.dto';
+import { Auth } from 'src/auth/decorators/auth.decorator';
+import { ValidRoles } from 'src/auth/interfaces';
 
 @Controller('ubications')
+@Auth(ValidRoles.admin)
 export class UbicationsController {
   constructor(private readonly ubicationsService: UbicationsService) {}
 

@@ -2,8 +2,12 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from
 import { HomeService } from './home.service';
 import { CreateHomeDto } from './dto/create-home.dto';
 import { UpdateHomeDto } from './dto/update-home.dto';
+import { Auth } from 'src/auth/decorators/auth.decorator';
+import { ValidRoles } from 'src/auth/interfaces';
 
 @Controller('home')
+
+@Auth(ValidRoles.admin)
 export class HomeController {
   constructor(private readonly homeService: HomeService) {}
 

@@ -10,6 +10,7 @@ import { OrdersModule } from './orders/orders.module';
 import { UbicationsModule } from './ubications/ubications.module';
 import { CateringModule } from './catering/catering.module';
 import { NewsModule } from './news/news.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -46,6 +47,8 @@ import { NewsModule } from './news/news.module';
     CateringModule,
 
     NewsModule,
+
+    AuthModule,
 
   ],
   controllers: [],

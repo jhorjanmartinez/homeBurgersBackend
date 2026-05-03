@@ -4,12 +4,14 @@ import { HomeController } from './home.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Home } from './entities/home.entity';
 import { HomeCarrouselItem } from './entities/home-carrousel-item.entity';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   controllers: [HomeController],
   providers: [HomeService],
   imports: [
-    TypeOrmModule.forFeature([Home, HomeCarrouselItem])
+    TypeOrmModule.forFeature([Home, HomeCarrouselItem]),
+    AuthModule
   ]
 })
 export class HomeModule {}
