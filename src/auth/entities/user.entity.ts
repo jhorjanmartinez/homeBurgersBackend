@@ -1,0 +1,53 @@
+import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryColumn } from "typeorm";
+
+@Entity('Users')
+export class User {
+
+    @PrimaryColumn('uuid')
+    id: string
+
+
+    @Column({
+        type:'text',
+        unique: true
+    })
+    email:string
+
+    @Column({
+        type: 'text',
+        select: false
+    })
+    password:string;
+
+
+    @Column({
+        type: 'text'
+    })
+    fullName: string
+
+    @Column({
+        type:'bool',
+        default: true
+    })
+    isActive: boolean
+
+
+    @Column({
+        type:'text',
+        array: true,
+        default: ['user']
+    })
+    roles: string[]
+
+    
+    @BeforeInsert()
+    checkFieldsBeforeInsert() {
+        this.email.toLowerCase().trim()
+    }
+
+    @BeforeUpdate()
+    checkFieldsBeforeUpdate(){
+        this.checkFieldsBeforeInsert()
+    }
+
+}
