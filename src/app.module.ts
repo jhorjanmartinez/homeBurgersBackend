@@ -11,9 +11,12 @@ import { UbicationsModule } from './ubications/ubications.module';
 import { CateringModule } from './catering/catering.module';
 import { NewsModule } from './news/news.module';
 import { AuthModule } from './auth/auth.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TaskService } from './task.service';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     // Carga las variables de entorno desde .env
     ConfigModule.forRoot(),
 
@@ -53,7 +56,7 @@ import { AuthModule } from './auth/auth.module';
   ],
   controllers: [],
   providers: [
-    
+    TaskService
   ],
 })
 export class AppModule {}

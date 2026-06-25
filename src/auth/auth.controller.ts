@@ -55,23 +55,6 @@ testingPrivateRoute(
 }
 
 
-// @SetMetadata('roles',['admin', 'super-user'])
-// @Get('private2')
-// @RoleProtected(ValidRoles.superUser, ValidRoles.admin, ValidRoles.user)
-// @UseGuards( AuthGuard(),    )
-// privateRoute2(
-//   @GetUser() user: User
-// ) {
-
-//   return {
-//     ok:true,
-//     user
-//   }
-
-// }
-
-
-
 @Get('private3')
 @Auth( ValidRoles.admin )
 privateRoute3(
@@ -85,6 +68,13 @@ privateRoute3(
 
 }
 
-
+@Get('health')
+checkHealth() {
+  return {
+    ok: true,
+    status: 'up and running',
+    timestamp: new Date().toISOString()
+  };
+}
 
 }
