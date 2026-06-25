@@ -3,7 +3,7 @@ import { Cron } from "@nestjs/schedule";
 
 @Injectable()
 export class TaskService {
-  @Cron('*/14 * * * *')
+  @Cron('*/10 * * * *')
   async handleCron() {
     try {
       const url = 'https://homeburgersbackend.onrender.com/auth/health';
